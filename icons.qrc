@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>gui/icons/outline_zoom_in_black_48dp.png</file>
+        <file>gui/icons/outline_zoom_in_white_48dp.png</file>
+        <file>gui/icons/outline_zoom_out_black_48dp.png</file>
+        <file>gui/icons/outline_zoom_out_white_48dp.png</file>
+    </qresource>
+</RCC>
