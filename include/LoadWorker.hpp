@@ -17,6 +17,8 @@ public slots:
 
 signals:
     void modelReady(std::shared_ptr<OdbppModel> model);
+    void infoMessage(const QString& message);
+    void errorMessage(const QString& message);
 
 private:
     std::shared_ptr<OdbppModel> m_model;

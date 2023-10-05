@@ -14,6 +14,8 @@ public:
     explicit LayerScene(QWidget* parent = nullptr);
     ~LayerScene();
 
+    long long int numFeatures() const;
+
 public slots:    
     void addLayer(std::shared_ptr<Layer> layer);
 
@@ -23,7 +25,7 @@ signals:
 private:
     QPen m_defaultPen;
 
-    const float m_mult = 1000;
+    const double m_mult = 1000.0;
 };
 
 #endif // LAYERSSCENE_HPP

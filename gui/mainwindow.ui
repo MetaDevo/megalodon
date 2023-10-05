@@ -38,17 +38,6 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="zoomInButton">
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../icons.qrc">
-          <normaloff>:/gui/icons/outline_zoom_in_black_48dp.png</normaloff>:/gui/icons/outline_zoom_in_black_48dp.png</iconset>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="zoomOutButton">
         <property name="text">
          <string/>
@@ -56,6 +45,17 @@
         <property name="icon">
          <iconset resource="../icons.qrc">
           <normaloff>:/gui/icons/outline_zoom_out_black_48dp.png</normaloff>:/gui/icons/outline_zoom_out_black_48dp.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="zoomInButton">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../icons.qrc">
+          <normaloff>:/gui/icons/outline_zoom_in_black_48dp.png</normaloff>:/gui/icons/outline_zoom_in_black_48dp.png</iconset>
         </property>
        </widget>
       </item>

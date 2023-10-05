@@ -21,6 +21,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&m_workerThread, &QThread::finished, worker, &QObject::deleteLater);
     connect(this, &MainWindow::startLoad, worker, &LoadWorker::loadModel);
     connect(worker, &LoadWorker::modelReady, this, &MainWindow::newModelReady);
+    connect(worker, &LoadWorker::infoMessage, this, &MainWindow::appendLog);
+    connect(worker, &LoadWorker::errorMessage, this, &MainWindow::appendErrorLog);
     m_workerThread.start();
 
     connect(m_scene, &LayerScene::infoMessage, this, &MainWindow::appendLog);
@@ -60,7 +62,7 @@ void MainWindow::newModelReady(std::shared_ptr<OdbppModel> model)
 
     appendLog("Loading graphics...");
 
-    ui->layerGraphicsView->setUpdatesEnabled(false);
+    ui->layerGraphicsView->setUpdatesEnabled(false); // disable paint updates while loading geometry
 
     std::vector<std::shared_ptr<Layer>> layers = model->layers();
     for (auto& layer : layers) {
@@ -71,7 +73,8 @@ void MainWindow::newModelReady(std::shared_ptr<OdbppModel> model)
     //qDebug() << Q_FUNC_INFO << "bounding: " << bounding;
     //m_scene->setSceneRect(bounding);
 
-    ui->layerGraphicsView->setUpdatesEnabled(true);
+    ui->layerGraphicsView->setUpdatesEnabled(true); // reenable paint updates
+    //ui->layerGraphicsView->rotate(180.0);
     ui->layerGraphicsView->centerOn(QPointF(0.0, 0.0));
 }
 
@@ -97,5 +100,17 @@ void MainWindow::on_openButton_clicked()
 
         m_settings.setValue("lastdir", dir);
     }
+}
+
+
+void MainWindow::on_zoomInButton_clicked()
+{
+    ui->layerGraphicsView->scale(2.0, 2.0);
+}
+
+
+void MainWindow::on_zoomOutButton_clicked()
+{
+    ui->layerGraphicsView->scale(0.5, 0.5);
 }
 

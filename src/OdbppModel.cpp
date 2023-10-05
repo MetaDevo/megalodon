@@ -111,7 +111,7 @@ void OdbppModel::loadLayerDir(const QString& dirPath)
     QDir dir(dirPath);
 
     const QFileInfoList fileList = dir.entryInfoList();
-    qDebug() << Q_FUNC_INFO << fileList.size();
+    qDebug() << Q_FUNC_INFO << "Layer count:" << fileList.size();
     for (const auto& file : fileList)
     {
          if (file.isDir() && file.fileName() != "." && file.fileName() != "..") {
@@ -136,7 +136,6 @@ void OdbppModel::loadLayer(const QString& dirPath, std::shared_ptr<Layer> layer)
     qDebug() << Q_FUNC_INFO << dir.dirName();
 
     const QFileInfoList fileList = dir.entryInfoList();
-    qDebug() << Q_FUNC_INFO << fileList.size();
     for (const auto& file : fileList)
     {
          if (file.fileName() == "features") {
@@ -157,6 +156,7 @@ void OdbppModel::loadLayerFeatures(const QString& filePath, std::shared_ptr<Laye
             if (line.startsWith(prefixLine)) {
                 layer->lines.push_back(loadLineRecord(line));
             }
+            ///@todo load other featuers
         }
     } else {
         emit errorMessage("Couldn't open file: " + filePath);

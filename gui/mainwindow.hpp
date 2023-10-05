@@ -31,6 +31,10 @@ public slots:
 private slots:
     void on_openButton_clicked();
 
+    void on_zoomInButton_clicked();
+
+    void on_zoomOutButton_clicked();
+
 signals:
     void startLoad(const QDir& dir);
 
@@ -38,7 +42,6 @@ private:
     Ui::MainWindow *ui;
 
     QSettings m_settings;
-    std::shared_ptr<OdbppModel> m_model;
     LayerScene* m_scene = nullptr;
     QThread m_workerThread;
 };
