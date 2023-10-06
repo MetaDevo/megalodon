@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain("metadevo.com");
 
     QApplication a(argc, argv);
+    a.setStyle("fusion"); // should automatically change to dark mode per system context
     MainWindow w;
     w.show();
     return a.exec();
