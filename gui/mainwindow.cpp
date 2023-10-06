@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_scene = new LayerScene(this);
     ui->layerGraphicsView->setScene(m_scene);
 
-    LoadWorker* worker = new LoadWorker;
+    LoadWorker* worker = new LoadWorker; // deleted via connect to deleteLater
     worker->moveToThread(&m_workerThread);
     connect(&m_workerThread, &QThread::finished, worker, &QObject::deleteLater);
     connect(this, &MainWindow::startLoad, worker, &LoadWorker::loadModel);

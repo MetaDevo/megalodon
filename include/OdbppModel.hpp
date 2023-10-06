@@ -24,7 +24,6 @@ struct LineRecord
 struct Layer
 {
     unsigned int id;
-    unsigned int row;
     QString name;
     std::vector<LineRecord> lines;
     //std::vector<PadRecord> pads;
@@ -41,6 +40,12 @@ struct Step
     QString name;
 };
 
+struct MatrixLayer
+{
+    unsigned int id;
+    unsigned int row;
+    QString color;
+};
 
 class OdbppModel : public QObject
 {
@@ -66,11 +71,12 @@ private:
     void loadLayer(const QString& dirPath, std::shared_ptr<Layer> layer);
     void loadLayerFeatures(const QString& filePath, std::shared_ptr<Layer> layer);
     LineRecord loadLineRecord(const QString& str);
-    void readVariables(QTextStream stream);
+    std::pair<QString, QString> readVariable(const QString& line);
 
     QString m_name;
     std::vector<std::shared_ptr<Step>> m_steps;
     std::vector<std::shared_ptr<Layer>> m_layers;
+    std::map<QString, MatrixLayer> m_matrix;
 };
 
 #endif // ODBPPMODEL_HPP

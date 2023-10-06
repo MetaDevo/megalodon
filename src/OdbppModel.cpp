@@ -43,23 +43,51 @@ void OdbppModel::load(const QDir& dir)
 
 bool OdbppModel::loadMatrix(const QString& dirPath)
 {
+    bool stepState = false;
+    bool layerState = false;
     QDir dir(dirPath);
     const QFileInfoList fileList = dir.entryInfoList();
     for (const auto& file : fileList)
     {
-        if (file.fileName() == "matrix" && file.isFile()) {
+        if (file.fileName() == "matrix" && file.isFile())
+        {
             emit infoMessage("Loading matrix...");
             QFile data(file.absoluteFilePath());
-            if (data.open(QFile::ReadOnly)) {
+            if (data.open(QFile::ReadOnly))
+            {
                 QTextStream stream(&data);
                 QString line;
-                while (stream.readLineInto(&line)) {
-                    ///@todo load Matrix
+                while (stream.readLineInto(&line))
+                {
+                    if (line.contains("STEP")) {
+                        qDebug() << Q_FUNC_INFO << "new step...";
+                        stepState = true;
+                    } else if (line.contains("LAYER")) {
+                        qDebug() << Q_FUNC_INFO << "new layer...";
+                        layerState = true;
+                    } else if (stepState) {
+                        std::pair<QString, QString> pair = readVariable(line);
+                        if (pair.first.isEmpty()) {
+                            stepState = false;
+                        }
+                    } else if (layerState) {
+                        std::pair<QString, QString> pair = readVariable(line);
+                        if (pair.first.isEmpty()) {
+                            layerState = false;
+                        } else if (pair.first == "COLOR") {
+                            qDebug() << Q_FUNC_INFO << "color" << pair.second;
+
+                        }
+                    }
                 }
-            } else {
-                emit errorMessage("Couldn't open matrix file");
+                emit infoMessage("Matrix loaded.");
+                return true;
             }
-            return true;
+            else
+            {
+                emit errorMessage("Couldn't open matrix file.");
+                return false;
+            }
         }
     }
 
@@ -178,19 +206,18 @@ LineRecord OdbppModel::loadLineRecord(const QString& str)
     return rec;
 }
 
-void OdbppModel::readVariables(QTextStream stream)
+std::pair<QString, QString> OdbppModel::readVariable(const QString& line)
 {
-    while (!stream.atEnd())
-    {
-        QString line = stream.readLine();
-        QStringList fields = line.split('=');
+    std::pair<QString, QString> pair;
 
+    if (!line.contains('}'))
+    {
+        QStringList fields = line.split('=');
         if (fields.size() == 2)
         {
-            QString name = fields[0].trimmed();
-            QString value = fields[1].trimmed();
-
-            qDebug() << "Name:" << name << ", Value:" << value;
+            pair.first = fields[0].trimmed();
+            pair.second = fields[1].trimmed();
         }
     }
+    return pair;
 }
